@@ -1,0 +1,53 @@
+
+{
+  "registers": {
+    "0": {
+      "name": "control_word",
+      "access": "rw",
+      "min": 0,
+      "max": 7
+    },
+    "1": {
+      "name": "speed_ref",
+      "access": "rw",
+      "min": 0,
+      "max": 500
+    },
+    "2": {
+      "name": "accel_time",
+      "access": "rw",
+      "min": 1,
+      "max": 3600
+    },
+    "3": {
+      "name": "decel_time",
+      "access": "rw",
+      "min": 1,
+      "max": 3600
+    },
+    "100": {
+      "name": "status_word",
+      "access": "ro",
+      "min": 0,
+      "max": 15
+    },
+    "101": {
+      "name": "output_freq",
+      "access": "ro",
+      "min": 0,
+      "max": 500
+    },
+    "102": {
+      "name": "motor_current",
+      "access": "ro",
+      "min": 0,
+      "max": 1000
+    },
+    "103": {
+      "name": "fault_code",
+      "access": "ro",
+      "min": 0,
+      "max": 255
+    }
+  }
+}
