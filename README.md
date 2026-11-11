@@ -3,10 +3,6 @@
 
 **A software-based testing environment for Variable Frequency Drive (VFD) communication protocols.**
 
-![Status](https://img.shields.io/badge/Status-In%20Progress-orange)
-![Python](https://img.shields.io/badge/Python-3.11+-blue)
-![C++](https://img.shields.io/badge/C%2B%2B-17-blue)
-![Protocol](https://img.shields.io/badge/Protocol-Modbus%20TCP%2FRTU-green)
 
 ## Overview
 
