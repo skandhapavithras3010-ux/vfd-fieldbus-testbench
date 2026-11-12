@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <vector>
 #include <optional>
+#include <stdexcept>
 
 namespace modbus {
 
@@ -20,6 +21,18 @@ struct Frame {
     uint8_t slave_id;
     uint8_t function_code;
     std::vector<uint8_t> data;
+
+    bool is_exception() const {
+        return (function_code & 0x80) != 0;
+    }
+
+    uint8_t exception_code() const {
+        if (!is_exception() || data.size() != 1) {
+            throw std::logic_error("Frame is not a valid exception response");
+        }
+
+        return data[0];
+    }
 };
 
 uint16_t calculate_crc16(const std::vector<uint8_t>& data);

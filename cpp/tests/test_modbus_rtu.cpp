@@ -112,6 +112,25 @@ void test_invalid_frame_parsing() {
     std::cout << "[PASS] Invalid frame parsing\n";
 }
 
+void test_exception_response() {
+    // Exception response: slave 1, function 0x83, exception code 2
+    auto frame = build_frame(
+        1,
+        0x83,
+        {0x02}
+    );
+
+    auto parsed = parse_frame(frame);
+
+    assert(parsed.has_value());
+    assert(parsed->slave_id == 1);
+    assert(parsed->function_code == 0x83);
+    assert(parsed->is_exception());
+    assert(parsed->exception_code() == 2);
+
+    std::cout << "[PASS] Exception response handling\n";
+}
+
 int main() {
     test_crc_known_vector();
     test_frame_construction();
@@ -121,7 +140,7 @@ int main() {
     test_invalid_slave_id();
     test_frame_parsing();
     test_invalid_frame_parsing();
-
+    test_exception_response();
     std::cout << "\nAll C++ RTU tests passed.\n";
 
     return 0;
