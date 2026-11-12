@@ -73,6 +73,10 @@ std::optional<Frame> parse_frame(
     if (!validate_frame(frame)) {
         return std::nullopt;
     }
+        // Exception responses must contain exactly one exception-code byte.
+    if ((frame[1] & 0x80) != 0 && frame.size() != 5) {
+        return std::nullopt;
+    }
 
     Frame result;
 

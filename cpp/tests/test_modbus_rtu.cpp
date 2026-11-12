@@ -131,6 +131,20 @@ void test_exception_response() {
     std::cout << "[PASS] Exception response handling\n";
 }
 
+void test_malformed_exception_response() {
+    // Invalid exception response: two exception-code bytes.
+    auto frame = build_frame(
+        1,
+        0x83,
+        {0x02, 0x03}
+    );
+
+    auto parsed = parse_frame(frame);
+
+    assert(!parsed.has_value());
+
+    std::cout << "[PASS] Malformed exception response rejection\n";
+}
 int main() {
     test_crc_known_vector();
     test_frame_construction();
@@ -141,6 +155,7 @@ int main() {
     test_frame_parsing();
     test_invalid_frame_parsing();
     test_exception_response();
+    test_malformed_exception_response();
     std::cout << "\nAll C++ RTU tests passed.\n";
 
     return 0;
