@@ -1,5 +1,6 @@
 
 import threading
+import time
 import pytest
 
 from sim.vfd_sim import DEVICE, Server, Handler
@@ -20,6 +21,8 @@ def client():
         103: 0
     }
     DEVICE.fault = False
+    DEVICE._output_freq = 0.0
+    DEVICE._last_update = time.monotonic()
 
     server = Server(("127.0.0.1", 0), Handler)
     thread = threading.Thread(
