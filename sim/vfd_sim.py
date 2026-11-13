@@ -1,10 +1,12 @@
 
 import json
 import socketserver
+import os
 import struct
 from pathlib import Path
 
 SPEC_PATH = Path(__file__).resolve().parents[1] / "spec" / "register_map.json"
+BUG_MODE = os.getenv("VFD_BUG") == "1"
 
 with open(SPEC_PATH, "r", encoding="utf-8") as f:
     SPEC = json.load(f)["registers"]
@@ -57,7 +59,7 @@ class VFD:
             if rule["access"] != "rw":
                 raise ValueError(2)
 
-            if not rule["min"] <= value <= rule["max"]:
+            if not BUG_MODE and not rule["min"] <= value <= rule["max"]:
                 raise ValueError(3)
 
             if a == 0 and value & ~7:
