@@ -15,8 +15,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install compiler
-        run: sudo apt-get update && sudo apt-get install -y g++
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++
+          python -m pip install pytest
 
       - name: Compile C++ tests
         run: |
@@ -26,5 +34,16 @@ jobs:
             cpp/src/modbus_rtu.cpp \
             -o test_modbus_rtu
 
+      - name: Compile CRC CLI
+        run: |
+          g++ -std=c++17 -Wall -Wextra \
+            -Icpp/include \
+            cpp/tests/crc_cli.cpp \
+            cpp/src/modbus_rtu.cpp \
+            -o cpp/tests/crc_cli
+
       - name: Run C++ tests
         run: ./test_modbus_rtu
+
+      - name: Run Python-C++ CRC differential tests
+        run: python -m pytest tests/test_crc_differential.py -v
