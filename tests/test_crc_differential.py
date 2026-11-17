@@ -1,3 +1,4 @@
+
 import os
 import random
 import subprocess
@@ -11,6 +12,7 @@ EXE_PATH = (
     / "tests"
     / EXE_NAME
 )
+
 
 def python_crc16(data):
     crc = 0xFFFF
@@ -28,11 +30,21 @@ def python_crc16(data):
 
 
 def cpp_crc16(data):
+    env = os.environ.copy()
+
+    if os.name == "nt":
+        env["PATH"] = (
+            r"C:\msys64\ucrt64\bin"
+            + os.pathsep
+            + env.get("PATH", "")
+        )
+
     result = subprocess.run(
         [str(EXE_PATH), *[f"{byte:02X}" for byte in data]],
         capture_output=True,
         text=True,
-        check=True
+        check=True,
+        env=env,
     )
 
     return int(result.stdout.strip(), 16)

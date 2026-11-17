@@ -1,4 +1,4 @@
-
+import time
 import json
 import socketserver
 import os
@@ -7,6 +7,7 @@ from pathlib import Path
 
 SPEC_PATH = Path(__file__).resolve().parents[1] / "spec" / "register_map.json"
 BUG_MODE = os.getenv("VFD_BUG") == "1"
+LATENCY_MS = float(os.getenv("VFD_LATENCY_MS", "0"))
 
 with open(SPEC_PATH, "r", encoding="utf-8") as f:
     SPEC = json.load(f)["registers"]
@@ -161,6 +162,8 @@ class Handler(socketserver.BaseRequestHandler):
 
                 pdu = recv_exact(self.request, length - 1)
                 response = process_pdu(pdu)
+                if LATENCY_MS > 0:
+                    time.sleep(LATENCY_MS / 1000)
 
                 if response is None:
                     return

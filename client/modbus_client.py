@@ -15,6 +15,7 @@ class ModbusClient:
         self.unit_id = unit_id
         self.transaction_id = 0
         self.sock = None
+        self.transaction_log = []
 
     def connect(self):
         self.sock = socket.create_connection(
@@ -74,6 +75,13 @@ class ModbusClient:
 
         response = self._recv_exact(length - 1)
         latency = (time.perf_counter() - start) * 1000
+        is_exception = bool(response[0] & 0x80)
+
+        self.transaction_log.append({
+            "latency": latency,
+            "reply_length": len(response),
+            "is_exception": is_exception
+        })
 
         if response[0] & 0x80:
             raise ModbusException(

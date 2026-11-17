@@ -1,12 +1,12 @@
 
 import pytest
 
-from ai.test_generator import load_spec, generate_boundary_cases
+from ai.test_generator import load_spec, generate
 from client.modbus_client import ModbusException
 
 
 SPEC = load_spec()
-CASES = generate_boundary_cases(SPEC)
+CASES = generate(SPEC)
 
 
 @pytest.mark.parametrize(
